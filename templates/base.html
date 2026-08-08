@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Cyber Sentinel XDR</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Project CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+
+:root{
+
+--bg:#071426;
+--sidebar:#0B1E36;
+--card:#102845;
+--primary:#00BFFF;
+--success:#28C76F;
+--danger:#EA5455;
+--warning:#FFB020;
+--text:#FFFFFF;
+--text-light:#D4D7DD;
+
+}
+
+body{
+
+background:var(--bg);
+font-family:'Poppins',sans-serif;
+color:var(--text);
+
+}
+
+.navbar{
+
+background:var(--sidebar);
+
+}
+
+.navbar-brand{
+
+font-size:24px;
+font-weight:700;
+letter-spacing:.5px;
+
+}
+
+.card{
+
+background:var(--card);
+border:1px solid rgba(255,255,255,.05);
+border-radius:18px;
+transition:.3s;
+box-shadow:0 12px 30px rgba(0,0,0,.35);
+color:var(--text);
+
+}
+
+.card:hover{
+
+transform:translateY(-6px);
+box-shadow:0 18px 40px rgba(0,191,255,.18);
+
+}
+
+.card-body{
+
+padding:25px;
+
+}
+
+.display-4{
+
+font-weight:bold;
+
+}
+
+.table{
+
+color:white;
+
+}
+
+.table thead{
+
+background:#0B1E36;
+
+}
+
+.table td,
+.table th{
+
+vertical-align:middle;
+
+}
+
+.btn{
+
+border-radius:10px;
+font-weight:500;
+
+}
+
+.btn-primary{
+
+background:var(--primary);
+border:none;
+
+}
+
+.btn-primary:hover{
+
+background:#0099cc;
+
+}
+
+.btn-success{
+
+background:var(--success);
+border:none;
+
+}
+
+.btn-danger{
+
+background:var(--danger);
+border:none;
+
+}
+
+.alert{
+
+border:none;
+border-radius:12px;
+
+}
+
+footer{
+
+margin-top:50px;
+padding:20px;
+text-align:center;
+color:#9aa8b7;
+font-size:14px;
+
+}
+
+</style>
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+
+    <div class="container">
+
+        <!-- Logo -->
+
+        <a class="navbar-brand fw-bold fs-3"
+           href="{{ url_for('dashboard.landing') }}">
+
+            <i class="bi bi-shield-lock-fill text-info"></i>
+
+            Cyber Sentinel XDR
+
+        </a>
+
+        <!-- Navbar Right -->
+
+        <div class="d-flex align-items-center gap-2">
+
+        {% if current_user.is_authenticated %}
+
+           
+
+        {% else %}
+
+            <!-- Landing Navbar -->
+
+            {% if request.endpoint=='dashboard.landing_page' %}
+
+            <a class="nav-link text-light"
+               href="#features">
+
+                Features
+
+            </a>
+
+            <a class="nav-link text-light"
+               href="#education">
+
+                Security Tips
+
+            </a>
+
+            <a class="nav-link text-light"
+               href="#about">
+
+                About
+
+            </a>
+
+            <a class="btn btn-outline-info"
+               href="{{ url_for('auth.login') }}">
+
+                User Login
+
+            </a>
+
+            <a class="btn btn-info"
+               href="{{ url_for('admin.admin_login') }}">
+
+                Admin Login
+
+            </a>
+
+            {% endif %}
+
+        {% endif %}
+
+        </div>
+
+    </div>
+
+</nav>
+
+<div class="container mt-4">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+
+{% for category,message in messages %}
+
+<div class="alert alert-{{category}} alert-dismissible fade show shadow">
+
+{{message}}
+
+<button
+class="btn-close"
+data-bs-dismiss="alert"></button>
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+{% endwith %}
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+<footer>
+
+© 2026 Cyber Sentinel XDR |
+Enterprise Threat Detection & Response Platform
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+{% block scripts %}{% endblock %}
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</body>
+
+</html>

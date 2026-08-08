@@ -1,0 +1,1092 @@
+{% extends "base.html" %}
+
+{% block content %}
+<audio id="alertSound">
+    <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+</audio>
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:9999;">
+
+    <div id="attackToast"
+         class="toast text-bg-danger border-0"
+         role="alert">
+
+        <div class="d-flex">
+
+            <div class="toast-body">
+
+                🚨 New Attack Detected
+
+            </div>
+
+            <button
+                type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+                data-bs-dismiss="toast">
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="container-fluid py-4">
+
+<!-- ================= HEADER ================= -->
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+    <div>
+
+        <a href="{{ url_for('dashboard.landing') }}"
+           class="btn btn-outline-info me-2">
+
+            <i class="bi bi-house-door-fill"></i>
+            Home
+
+        </a>
+
+        <a href="{{ url_for('auth.logout') }}"
+           class="btn btn-outline-danger">
+
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+
+        </a>
+
+    </div>
+
+    <div class="text-center">
+
+        <h2 class="fw-bold mb-1">
+
+            <i class="bi bi-speedometer2 text-info"></i>
+
+            Security Operations Center
+
+        </h2>
+
+        <p class="text-light mb-0">
+
+            Welcome Administrator • Monitor your infrastructure in real time
+
+        </p>
+
+    </div>
+
+    <div>
+
+        <span class="badge bg-success fs-6 px-3 py-2">
+
+            <i class="bi bi-shield-check"></i>
+
+            System Online
+
+        </span>
+
+    </div>
+
+</div>
+
+<!-- ================= QUICK ACTIONS ================= -->
+
+<div class="card shadow-lg border-0 mb-4">
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-lg-4">
+
+<form action="{{ url_for('admin.unblock_all_ips') }}" method="POST">
+
+<button
+type="submit"
+class="btn btn-warning w-100">
+
+<i class="bi bi-unlock-fill"></i>
+
+Unblock All IP Addresses
+
+</button>
+
+</form>
+
+</div>
+
+<div class="col-lg-4">
+
+<a
+href="{{ url_for('admin.download_csv') }}"
+class="btn btn-success w-100">
+
+<i class="bi bi-file-earmark-spreadsheet-fill"></i>
+
+Export CSV Report
+
+</a>
+
+</div>
+
+<div class="col-lg-4">
+
+<a
+href="{{ url_for('admin.download_pdf') }}"
+class="btn btn-danger w-100">
+
+<i class="bi bi-file-earmark-pdf-fill"></i>
+
+Export PDF Report
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= DASHBOARD CARDS ================= -->
+
+<div class="row g-4">
+
+<div class="col-xl-3 col-md-6">
+
+<div class="card shadow border-0 h-100">
+
+<div class="card-body">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+
+<p class="text-secondary mb-1">
+
+Total Users
+
+</p>
+
+<h2 class="fw-bold" id="totalUsers">
+
+{{ total_users }}
+
+</h2>
+
+</div>
+
+<div class="fs-1 text-primary">
+
+<i class="bi bi-people-fill"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-xl-3 col-md-6">
+
+<div class="card shadow border-0 h-100">
+
+<div class="card-body">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+
+<p class="text-secondary mb-1">
+
+Attack Logs
+
+</p>
+
+<h2 class="fw-bold" id="totalAttacks">
+
+{{ total_attacks }}
+
+</h2>
+
+</div>
+
+<div class="fs-1 text-danger">
+
+<i class="bi bi-bug-fill"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-xl-3 col-md-6">
+
+<div class="card shadow border-0 h-100">
+
+<div class="card-body">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+
+<p class="text-secondary mb-1">
+
+Blocked IPs
+
+</p>
+
+<h2 class="fw-bold" id="blockedIPs">
+
+{{ total_blocked }}
+
+</h2>
+
+</div>
+
+<div class="fs-1 text-warning">
+
+<i class="bi bi-shield-slash-fill"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-xl-3 col-md-6">
+
+<div class="card shadow border-0 h-100">
+
+<div class="card-body">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+
+<p class="text-secondary mb-1">
+
+Incidents
+
+</p>
+
+<h2 class="fw-bold" id="incidents">
+
+{{ total_incidents }}
+
+</h2>
+
+</div>
+
+<div class="fs-1 text-info">
+
+<i class="bi bi-exclamation-triangle-fill"></i>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= THREAT SCORE ================= -->
+
+<div class="row mt-4">
+
+<div class="col-lg-12">
+
+<div class="card shadow border-0">
+
+<div class="card-body d-flex justify-content-between align-items-center">
+
+<div>
+
+<h5 class="mb-2">
+
+Overall Threat Score
+
+</h5>
+
+<p class="text-secondary mb-0">
+
+Calculated from detected attacks and incidents.
+
+</p>
+
+</div>
+
+<div>
+
+<h1 class="text-danger fw-bold" id="threatScore">
+
+{{ threat_score }}
+
+</h1>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- Charts start here -->
+
+   <!-- ================= SECURITY ANALYTICS ================= -->
+
+<div class="row g-4">
+
+    <!-- Attack Analytics -->
+
+    <div class="col-lg-8">
+
+        <div class="card shadow border-0 h-100">
+
+            <div class="card-header bg-primary text-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-bar-chart-fill"></i>
+
+                    Attack Analytics
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="attackChart" height="120"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Severity -->
+
+    <div class="col-lg-4">
+
+        <div class="card shadow border-0 h-100">
+
+            <div class="card-header bg-danger text-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-pie-chart-fill"></i>
+
+                    Severity Distribution
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="severityChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= SECURITY SUMMARY ================= -->
+
+<div class="row mt-4 g-4">
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-0">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-bug-fill text-danger fs-2"></i>
+
+                <h6 class="mt-3">
+
+                    Total Attacks
+
+                </h6>
+
+                <h2>
+
+                    {{ total_attacks }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-0">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-shield-lock-fill text-success fs-2"></i>
+
+                <h6 class="mt-3">
+
+                    Protected Assets
+
+                </h6>
+
+                <h2>
+
+                    {{ total_users }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-0">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-shield-fill-x text-warning fs-2"></i>
+
+                <h6 class="mt-3">
+
+                    Blocked IPs
+
+                </h6>
+
+                <h2>
+
+                    {{ total_blocked }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow border-0">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-activity text-info fs-2"></i>
+
+                <h6 class="mt-3">
+
+                    Active Incidents
+
+                </h6>
+
+                <h2>
+
+                    {{ total_incidents }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+
+<!-- ================= RECENT SECURITY EVENTS ================= -->
+
+<div class="card shadow-lg border-0 mb-5">
+
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-shield-exclamation"></i>
+
+            Recent Security Events
+
+        </h5>
+        
+       <div class="d-flex justify-content-end align-items-center gap-2 mb-3">
+
+    <a href="{{ url_for('admin.download_csv') }}"
+       class="btn btn-success btn-sm">
+        <i class="bi bi-file-earmark-spreadsheet-fill"></i> CSV
+    </a>
+
+    <a href="{{ url_for('admin.download_pdf') }}"
+       class="btn btn-danger btn-sm">
+        <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+    </a>
+
+    <a href="{{ url_for('admin.all_attacks') }}"
+       class="btn btn-primary btn-sm px-4">
+        <i class="bi bi-list-ul"></i> View All
+    </a>
+
+</div>
+       
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+<div class="row mb-3">
+
+    <div class="col-md-4">
+        <input
+            type="text"
+            id="searchIP"
+            class="form-control"
+            placeholder="Search IP Address">
+    </div>
+
+    <div class="col-md-4">
+        <input
+            type="text"
+            id="searchAttack"
+            class="form-control"
+            placeholder="Search Attack Type">
+    </div>
+
+    <div class="col-md-4">
+
+        <select
+            id="searchSeverity"
+            class="form-select">
+
+            <option value="">All Severity</option>
+            <option>Critical</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+
+        </select>
+
+    </div>
+
+</div>
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Source IP</th>
+
+                        <th>Attack Type</th>
+
+                        <th>Severity</th>
+
+                        <th>Detection Time</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="liveAttackTable">
+
+                {% for attack in recent_attacks %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ attack.id }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="fw-semibold">
+
+                                {{ attack.ip_address }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {{ attack.attack_type }}
+
+                        </td>
+
+                        <td>
+
+                            {% if attack.severity=="CRITICAL" %}
+
+                                <span class="badge bg-danger">
+
+                                    CRITICAL
+
+                                </span>
+
+                            {% elif attack.severity=="HIGH" %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    HIGH
+
+                                </span>
+
+                            {% elif attack.severity=="MEDIUM" %}
+
+                                <span class="badge bg-info text-dark">
+
+                                    MEDIUM
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-success">
+
+                                    LOW
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ attack.detected_at.strftime("%d %b %Y %H:%M") }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                Blocked
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<div class="card shadow-lg border-0 mb-5">
+
+    <div class="card-header bg-primary text-white">
+
+        <h5 class="mb-0">
+
+            🌍 Live World Attack Map
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div
+            id="attackMap"
+            style="height:500px; border-radius:12px;">
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= SYSTEM HEALTH ================= -->
+
+<div class="row g-4 mb-5">
+
+    <div class="col-md-3">
+        <div class="card shadow-lg border-0 h-100 text-center">
+            <div class="card-body">
+                <h6 class="text-light mb-5">CPU Usage</h6>
+                <h2 class="fw-bold text-info">{{ cpu_usage }}%</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-lg border-0 h-100 text-center">
+            <div class="card-body">
+                <h6 class="text-light mb-5">Memory Usage</h6>
+                <h2 class="fw-bold text-warning">{{ memory_usage }}%</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-lg border-0 h-100 text-center">
+            <div class="card-body">
+                <h6 class="text-light mb-5">Server Status</h6>
+                <span class="badge bg-success fs-6">{{ server_status }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-lg border-0 h-100 text-center">
+            <div class="card-body">
+                <h6 class="text-light mb-5">Database</h6>
+                <span class="badge bg-primary fs-6">{{ database_status }}</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+let attackChart;
+let severityChart;
+
+let map;
+
+let markers = [];
+
+function loadDashboard() {
+
+fetch("/admin/live-dashboard")
+
+.then(response => response.json())
+
+.then(data => {
+
+document.getElementById("totalUsers").innerText =
+data.total_users;
+
+document.getElementById("totalAttacks").innerText =
+data.total_attacks;
+
+document.getElementById("blockedIPs").innerText =
+data.total_blocked;
+
+document.getElementById("incidents").innerText =
+data.total_incidents;
+
+document.getElementById("threatScore").innerText =
+data.threat_score;
+
+if(attackChart){
+
+attackChart.destroy();
+
+}
+
+attackChart = new Chart(
+document.getElementById("attackChart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:data.attack_labels,
+
+datasets:[{
+
+label:"Detected Attacks",
+
+data:data.attack_counts,
+
+backgroundColor:"#00BFFF",
+
+borderRadius:10
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true
+
+}
+
+}
+
+}
+
+}
+
+);
+
+if(severityChart){
+
+severityChart.destroy();
+
+}
+
+severityChart = new Chart(
+
+document.getElementById("severityChart"),
+
+{
+
+type:"doughnut",
+
+data:{
+
+labels:data.severity_labels,
+
+datasets:[{
+
+data:data.severity_counts,
+
+backgroundColor:[
+
+"#EA5455",
+
+"#FFB020",
+
+"#00BFFF",
+
+"#28C76F"
+
+],
+
+borderWidth:0
+
+}]
+
+},
+
+options:{
+
+cutout:"70%",
+
+plugins:{
+
+legend:{
+
+position:"bottom"
+
+}
+
+}
+
+}
+
+}
+
+);
+
+});
+
+}
+let lastAttackId = 0;
+
+function loadLiveAttacks(){
+
+    const ip = document.getElementById("searchIP").value.trim();
+    const attack = document.getElementById("searchAttack").value.trim();
+    const severity = document.getElementById("searchSeverity").value;
+
+    fetch(`/admin/live-attacks?ip=${encodeURIComponent(ip)}&attack=${encodeURIComponent(attack)}&severity=${encodeURIComponent(severity)}`)
+
+    .then(response => response.json())
+    .then(data => {
+
+        const table = document.getElementById("liveAttackTable");
+
+        table.innerHTML = "";
+
+        if(data.length===0){
+
+            table.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center text-warning">
+                    No attacks found
+                </td>
+            </tr>`;
+            return;
+        }
+
+        data.forEach(function(attack){
+
+            let badge="";
+
+            if(attack.severity=="CRITICAL")
+                badge='<span class="badge bg-danger">CRITICAL</span>';
+            else if(attack.severity=="HIGH")
+                badge='<span class="badge bg-warning text-dark">HIGH</span>';
+            else if(attack.severity=="MEDIUM")
+                badge='<span class="badge bg-info text-dark">MEDIUM</span>';
+            else
+                badge='<span class="badge bg-success">LOW</span>';
+
+            table.innerHTML += `
+            <tr>
+                <td>${attack.id}</td>
+                <td>${attack.ip_address}</td>
+                <td>${attack.attack_type}</td>
+                <td>${badge}</td>
+                <td>${attack.detected_at}</td>
+                <td><span class="badge bg-success">Blocked</span></td>
+            </tr>`;
+        });
+
+    });
+
+}
+
+
+function loadAttackMap(){
+
+    fetch("/admin/attack-map")
+
+    .then(response=>response.json())
+
+    .then(data=>{
+
+        if(!map){
+
+            map=L.map("attackMap").setView([20,78],2);
+
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:"© OpenStreetMap"
+                }
+            ).addTo(map);
+
+        }
+
+        markers.forEach(marker=>{
+
+            map.removeLayer(marker);
+
+        });
+
+        markers=[];
+
+        data.forEach(function(attack){
+
+            let marker=L.marker([
+                attack.lat,
+                attack.lng
+            ]).addTo(map);
+
+            marker.bindPopup(`
+
+                <b>${attack.type}</b><br>
+
+                🌍 ${attack.country}<br>
+
+                🏙 ${attack.city}<br>
+
+                💻 ${attack.ip}<br>
+
+                🚨 ${attack.severity}
+
+            `);
+
+            markers.push(marker);
+
+        });
+
+    });
+
+}
+window.onload=function(){
+
+    loadDashboard();
+
+    loadLiveAttacks();
+
+    loadAttackMap();
+
+    setInterval(loadDashboard,5000);
+
+    setInterval(loadAttackMap,5000);
+
+    document.getElementById("searchIP")
+.addEventListener("keyup", loadLiveAttacks);
+
+document.getElementById("searchAttack")
+.addEventListener("keyup", loadLiveAttacks);
+
+document.getElementById("searchSeverity")
+.addEventListener("change", loadLiveAttacks);
+
+};
+</script>
+
+{% endblock %}

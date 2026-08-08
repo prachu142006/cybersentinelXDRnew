@@ -1,0 +1,339 @@
+body{
+    background:#f4f7fc;
+    font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+}
+
+.navbar{
+    background:#0d1b2a !important;
+}
+
+.auth-card{
+
+    max-width:500px;
+
+    margin:60px auto;
+
+    border:none;
+
+    border-radius:15px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+}
+
+.card-header{
+
+    background:#0d6efd;
+
+    color:white;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+}
+
+.btn-primary{
+
+    width:100%;
+
+    padding:10px;
+
+    font-weight:bold;
+
+}
+
+.form-control{
+
+    border-radius:8px;
+
+}
+
+.form-label{
+
+    font-weight:600;
+
+}
+
+.card{
+
+    border-radius:15px;
+
+}
+
+.card-body{
+
+    padding:30px;
+
+}
+
+h1{
+
+    font-weight:bold;
+
+}
+
+h2{
+
+    font-weight:bold;
+
+}
+.chart-container{
+    position: relative;
+    width: 100%;
+    height: 350px;
+}
+
+.attack-row{
+
+animation:fadeAttack .5s ease;
+
+}
+
+@keyframes fadeAttack{
+
+from{
+
+opacity:0;
+transform:translateY(-8px);
+
+}
+
+to{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
+/* ===========================
+   LIVE THREAT TIMELINE
+=========================== */
+
+#threatTimeline{
+    position:relative;
+}
+
+#threatTimeline::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:24px;
+
+    top:0;
+
+    bottom:0;
+
+    width:3px;
+
+    background:#3b5b7c;
+
+    border-radius:20px;
+
+}
+
+.timeline-item{
+
+    position:relative;
+
+    margin-left:55px;
+
+    margin-bottom:25px;
+
+    background:#183553;
+
+    border-radius:12px;
+
+    padding:18px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.25);
+
+    transition:.3s;
+
+}
+
+.timeline-item:hover{
+
+    transform:translateX(8px);
+
+    background:#21456c;
+
+}
+
+.timeline-dot{
+
+    position:absolute;
+
+    left:-44px;
+
+    top:18px;
+
+    width:22px;
+
+    height:22px;
+
+    border-radius:50%;
+
+    border:4px solid white;
+
+}
+
+.timeline-critical{
+
+    background:#ff3b3b;
+
+}
+
+.timeline-high{
+
+    background:#ffb400;
+
+}
+
+.timeline-medium{
+
+    background:#29b6f6;
+
+}
+
+.timeline-low{
+
+    background:#34c759;
+
+}
+
+.timeline-title{
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+.timeline-meta{
+
+    color:#a8bfd9;
+
+    font-size:14px;
+
+    margin-top:8px;
+
+}
+
+.timeline-time{
+
+    color:#ffffff;
+
+    font-size:13px;
+
+}
+
+.timeline-ip{
+
+    color:#4fc3f7;
+
+    font-weight:600;
+
+}
+
+.timeline-location{
+
+    color:#8bc34a;
+
+}
+
+
+/* ===========================
+   MODAL
+=========================== */
+
+#attackModal .modal-content{
+    border-radius:18px;
+    border:none;
+    overflow:hidden;
+}
+
+#attackModal .modal-header{
+    background:#0d1b2a;
+    color:#fff;
+}
+
+#attackModal .modal-body{
+    background:#f8fafc;
+}
+
+#attackModal .modal-footer{
+    background:#f8fafc;
+}
+
+#attackModal .card{
+    border-radius:14px;
+    box-shadow:0 5px 18px rgba(0,0,0,.12);
+}
+
+#attackModal .card-header{
+    font-weight:700;
+}
+
+#modalDescription{
+    color:#212529;
+    line-height:1.8;
+    font-size:15px;
+}
+
+#recommendationList{
+    padding-left:20px;
+}
+
+#recommendationList li{
+    margin-bottom:10px;
+    color:#212529;
+    font-weight:500;
+}
+
+.list-group-item{
+    border:none;
+    border-bottom:1px solid #ececec;
+}
+
+#exportBtn{
+    font-weight:600;
+    border-radius:10px;
+}
+
+@media(max-width:768px){
+    #attackModal .modal-dialog{
+        margin:10px;
+    }
+}
+
+//* ===== Attack Modal Fix ===== */
+
+#attackModal .card-body{
+    background:#ffffff !important;
+    color:#212529 !important;
+}
+
+#attackModal .card{
+    background:#ffffff !important;
+}
+
+#attackModal p,
+#attackModal span,
+#attackModal strong,
+#attackModal li{
+    color:#212529 !important;
+}
+
+#attackModal .list-group-item{
+    background:#ffffff !important;
+    color:#212529 !important;
+}

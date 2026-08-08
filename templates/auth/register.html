@@ -1,0 +1,408 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container" style="max-width:1100px; margin-top:60px;">
+
+<div class="row align-items-center">
+
+<!-- Left Section -->
+
+<div class="col-lg-6 mb-5">
+
+<h1 class="fw-bold display-5">
+
+<i class="bi bi-shield-lock-fill text-info"></i>
+
+Cyber Sentinel XDR
+
+</h1>
+
+<h3 class="mt-4">
+
+Create Your Secure Account
+
+</h3>
+
+<p class="text-light fs-5">
+
+Join Cyber Sentinel XDR and protect your applications
+against modern cyber threats using real-time attack
+detection and intelligent monitoring.
+
+</p>
+
+<div class="mt-4">
+
+<div class="mb-3">
+
+<i class="bi bi-check-circle-fill text-success"></i>
+
+Secure User Authentication
+
+</div>
+
+<div class="mb-3">
+
+<i class="bi bi-check-circle-fill text-success"></i>
+
+Real-Time Threat Detection
+
+</div>
+
+<div class="mb-3">
+
+<i class="bi bi-check-circle-fill text-success"></i>
+
+Automatic IP Blocking
+
+</div>
+
+<div class="mb-3">
+
+<i class="bi bi-check-circle-fill text-success"></i>
+
+Security Event Monitoring
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Right Section -->
+
+<div class="col-lg-6">
+
+<div class="card shadow-lg">
+
+<div class="card-body p-5">
+
+<h2 class="text-center mb-4">
+
+Create Account
+
+</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Full Name
+
+</label>
+
+<div class="input-group">
+
+<span class="input-group-text">
+
+<i class="bi bi-person-fill"></i>
+
+</span>
+
+<input
+type="text"
+class="form-control"
+name="full_name"
+placeholder="Enter your full name"
+required>
+
+</div>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Email Address
+
+</label>
+
+<div class="input-group">
+
+<span class="input-group-text">
+
+<i class="bi bi-envelope-fill"></i>
+
+</span>
+
+<input
+type="email"
+class="form-control"
+name="email"
+placeholder="Enter your email"
+required>
+
+</div>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Password
+
+</label>
+
+<div class="input-group">
+
+<span class="input-group-text">
+
+<i class="bi bi-lock-fill"></i>
+
+</span>
+
+<input
+type="password"
+class="form-control"
+id="password"
+name="password"
+placeholder="Create a strong password"
+required
+onkeyup="checkStrength()">
+
+<button
+class="btn btn-outline-secondary"
+type="button"
+onclick="togglePassword()">
+
+<i id="passwordEye" class="bi bi-eye-fill"></i>
+
+</button>
+
+</div>
+
+<div class="mt-2">
+
+<small id="strengthText" class="text-secondary">
+
+Password Strength
+
+</small>
+
+</div>
+
+</div>
+
+<div class="mb-4">
+
+<label class="form-label">
+
+Confirm Password
+
+</label>
+
+<div class="input-group">
+
+<span class="input-group-text">
+
+<i class="bi bi-shield-lock-fill"></i>
+
+</span>
+
+<input
+type="password"
+class="form-control"
+id="confirmPassword"
+placeholder="Confirm your password"
+required>
+
+<button
+class="btn btn-outline-secondary"
+type="button"
+onclick="toggleConfirmPassword()">
+
+<i id="confirmEye" class="bi bi-eye-fill"></i>
+
+</button>
+
+</div>
+
+<small id="matchText"></small>
+
+</div>
+
+
+
+</div>
+
+<small id="matchText"></small>
+
+</div>
+
+<div class="d-grid">
+
+<button
+type="submit"
+class="btn btn-info btn-lg">
+
+<i class="bi bi-person-plus-fill"></i>
+
+Create Account
+
+</button>
+
+</div>
+
+</form>
+
+<hr class="my-4">
+
+<p class="text-center mb-0">
+
+Already have an account?
+
+<a
+href="{{ url_for('auth.login') }}"
+class="text-info text-decoration-none fw-bold">
+
+Login Here
+
+</a>
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+function togglePassword(){
+
+const password=document.getElementById("password");
+
+const eye=document.getElementById("passwordEye");
+
+if(password.type==="password"){
+
+password.type="text";
+
+eye.classList.remove("bi-eye-fill");
+
+eye.classList.add("bi-eye-slash-fill");
+
+}else{
+
+password.type="password";
+
+eye.classList.remove("bi-eye-slash-fill");
+
+eye.classList.add("bi-eye-fill");
+
+}
+
+}
+
+function toggleConfirmPassword(){
+
+const confirm=document.getElementById("confirmPassword");
+
+const eye=document.getElementById("confirmEye");
+
+if(confirm.type==="password"){
+
+confirm.type="text";
+
+eye.classList.remove("bi-eye-fill");
+
+eye.classList.add("bi-eye-slash-fill");
+
+}else{
+
+confirm.type="password";
+
+eye.classList.remove("bi-eye-slash-fill");
+
+eye.classList.add("bi-eye-fill");
+
+}
+
+}
+
+const confirmPassword = document.getElementById("confirmPassword");
+
+confirmPassword.addEventListener("keyup", function () {
+
+const password = document.getElementById("password").value;
+
+const confirm = confirmPassword.value;
+
+const match = document.getElementById("matchText");
+
+if (confirm.length === 0) {
+
+    match.innerHTML = "";
+
+}
+
+else if (password === confirm) {
+
+    match.innerHTML = "✔ Passwords Match";
+    match.className = "text-success";
+
+}
+
+else {
+
+    match.innerHTML = "✖ Passwords Do Not Match";
+    match.className = "text-danger";
+
+}
+
+});
+
+function checkStrength() {
+
+    const password = document.getElementById("password").value;
+
+    const strength = document.getElementById("strengthText");
+
+    if (password.length === 0) {
+
+        strength.innerHTML = "Password Strength";
+        strength.className = "text-secondary";
+
+    }
+
+    else if (password.length < 6) {
+
+        strength.innerHTML = "Weak Password";
+        strength.className = "text-danger";
+
+    }
+
+    else if (password.length < 10) {
+
+        strength.innerHTML = "Medium Password";
+        strength.className = "text-warning";
+
+    }
+
+    else {
+
+        strength.innerHTML = "Strong Password";
+        strength.className = "text-success";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

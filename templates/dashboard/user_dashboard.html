@@ -1,0 +1,1692 @@
+
+ {% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container mt-4">
+
+    <!-- Welcome Card -->
+    <div class="row mb-4">
+
+        <div class="col-lg-12">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+    👋 Welcome, {{ user.full_name }}
+</h2>
+
+      <p class="text-light opacity-75 mb-2 fs-6">
+    Cyber Sentinel XDR User Dashboard
+</p>
+
+<div class="mt-3">
+
+    <span class="badge bg-success me-2">
+        🛡 Protected
+    </span>
+
+    <span class="badge bg-info me-2">
+        Last Scan : {{ last_scan }}
+    </span>
+
+    <span class="badge bg-warning text-dark">
+        Successful Logins : {{ login_count }}
+    </span>
+
+</div>
+    </div>
+
+    <div class="text-end">
+
+        <h3
+        id="liveClock"
+        class="fw-bold text-primary mb-0">
+        </h3>
+
+        <small
+id="liveDate"
+class="text-light opacity-75">
+</small>
+    </div>
+
+</div>
+
+                    {% if system_status == "Secure" %}
+
+                    <div class="alert alert-success text-center mt-3">
+
+                        <h4 id="systemStatus" class="mb-0">
+                            🟢 System Secure
+                        </h4>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="alert alert-danger text-center mt-3">
+
+                        <h4 id="systemStatus" class="mb-0">
+                            🔴 System Under Attack
+                        </h4>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Dashboard Cards -->
+
+<div class="row g-4">
+
+    <!-- Security Health -->
+
+<div class="col-md-3">
+
+    <div class="card shadow h-100 border-0">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h5 class="fw-bold mb-0">
+                    <i class="bi bi-shield-fill-check text-danger"></i>
+                    Security Health
+                </h5>
+
+                {% if critical_count > 0 %}
+
+                    <span class="badge rounded-pill bg-danger px-3 py-2">
+                        Critical
+                    </span>
+
+                {% elif high_count > 0 %}
+
+                    <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
+                        High
+                    </span>
+
+                {% elif medium_count > 0 %}
+
+                    <span class="badge rounded-pill bg-info px-3 py-2">
+                        Medium
+                    </span>
+
+                {% else %}
+
+                    <span class="badge rounded-pill bg-success px-3 py-2">
+                        Secure
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+            <div class="text-center mt-3">
+
+                <h2 class="fw-bold text-danger">
+
+                    {{ critical_count }}
+
+                </h2>
+
+                <small class="text-light">
+
+                    Critical Threats
+
+                </small>
+
+            </div>
+
+            <hr>
+
+            <div class="row text-center">
+
+                <div class="col-6">
+
+                    <h6 class="text-warning mb-0">
+
+                        {{ high_count }}
+
+                    </h6>
+
+                    <small>High</small>
+
+                </div>
+
+                <div class="col-6">
+
+                    <h6 class="text-info mb-0">
+
+                        {{ medium_count }}
+
+                    </h6>
+
+                    <small>Medium</small>
+
+                </div>
+
+            </div>
+
+            <div class="text-center mt-3">
+
+                {% if critical_count > 0 %}
+
+                    <span class="text-danger fw-bold">
+                        Immediate Action Required
+                    </span>
+
+                {% elif high_count > 0 %}
+
+                    <span class="text-warning fw-bold">
+                        Investigation Required
+                    </span>
+
+                {% elif medium_count > 0 %}
+
+                    <span class="text-info fw-bold">
+                        Monitor Activity
+                    </span>
+
+                {% else %}
+
+                    <span class="text-success fw-bold">
+                        No Critical Threats
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  
+
+    <!-- Login History -->
+
+    <div class="col-md-3">
+
+        <div class="card shadow h-100">
+
+            <div class="card-body text-center">
+
+                <h5>
+
+                    <i class="bi bi-box-arrow-in-right text-primary"></i>
+
+                    Login History
+
+                </h5>
+
+                <h1 id="loginCount" class="display-4">
+
+                    {{ login_count }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Threat Alerts -->
+
+    <div class="col-md-3">
+
+        <div class="card shadow h-100">
+
+            <div class="card-body text-center">
+
+                <h5>
+
+                    <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+
+                    Threat Alerts
+
+                </h5>
+
+                <h1 id="threatCount" class="display-4 text-danger">
+
+                    {{ threat_count }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Total Attacks -->
+
+    <div class="col-md-3">
+
+        <div class="card shadow h-100">
+
+            <div class="card-body text-center">
+
+                <h5>
+
+                    <i class="bi bi-bug-fill text-danger"></i>
+
+                    Total Attacks
+
+                </h5>
+
+                <h1 id="totalAttacks" class="display-4 text-danger">
+
+                    {{ total_attacks }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- Attack Graph -->
+
+    <div class="row mt-5">
+
+        <div class="col-lg-12">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+    <div class="card-body">
+
+        <h4 class="text-center mb-4">Attack Analytics</h4>
+
+        <div style="height:350px;">
+
+            <canvas id="attackChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-end mb-3">
+
+    <a href="{{ url_for('dashboard.download_csv') }}"
+       class="btn btn-success shadow me-2">
+
+        <i class="fas fa-file-csv"></i> Download CSV
+
+    </a>
+
+    <a href="{{ url_for('dashboard.download_pdf') }}"
+       class="btn btn-danger shadow">
+
+        <i class="fas fa-file-pdf"></i> Download PDF
+
+    </a>
+
+</div>
+        <div class="row mt-4">
+
+    <div class="col-lg-12">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <h4 class="mb-0">Recent Attacks</h4>
+
+        <a
+            href="{{ url_for('dashboard.attack_history') }}"
+            class="btn btn-dark">
+
+            <i class="bi bi-clock-history"></i>
+
+            View Full History
+
+        </a>
+
+    </div>
+
+    <div class="row mb-3">
+
+    <div class="col-md-4">
+        <input
+            type="text"
+            id="ipSearch"
+            class="form-control"
+            placeholder="Search IP Address..."
+        >
+    </div>
+
+    <div class="col-md-4">
+        <input
+            type="text"
+            id="attackSearch"
+            class="form-control"
+            placeholder="Search Attack Type..."
+        >
+    </div>
+
+    <div class="col-md-4">
+        <select
+            id="severityFilter"
+            class="form-select"
+        >
+            <option value="">All Severity</option>
+            <option>CRITICAL</option>
+            <option>HIGH</option>
+            <option>MEDIUM</option>
+            <option>LOW</option>
+        </select>
+    </div>
+
+</div>
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Time</th>
+
+                            <th>Attack Type</th>
+
+                            <th>IP Address</th>
+
+                            <th>Severity</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                   <tbody id="recentAttackBody">
+
+                    {% for attack in recent_attacks %}
+
+                        <tr>
+
+                            <td>{{ attack.detected_at.strftime('%d-%m-%Y %H:%M') }}</td>
+
+                            <td>{{ attack.attack_type }}</td>
+
+                            <td>{{ attack.ip_address }}</td>
+
+                          <td>
+
+{% if attack.severity == "CRITICAL" %}
+
+<span class="badge bg-danger">{{ attack.severity }}</span>
+
+{% elif attack.severity == "HIGH" %}
+
+<span class="badge bg-warning text-dark">{{ attack.severity }}</span>
+
+{% else %}
+
+<span class="badge bg-success">{{ attack.severity }}</span>
+
+{% endif %}
+
+</td>
+
+<td>
+<button
+class="btn btn-primary btn-sm"
+
+data-bs-toggle="modal"
+data-bs-target="#attackModal"
+
+data-type="{{ attack.attack_type }}"
+data-ip="{{ attack.ip_address }}"
+data-severity="{{ attack.severity }}"
+data-description="{{ attack.description }}"
+data-time="{{ attack.detected_at.strftime('%d-%m-%Y %H:%M:%S') }}"
+
+data-status="Blocked"
+data-risk="95"
+data-source="Cyber Sentinel XDR"
+data-country="India"
+data-hostname="localhost">
+
+<i class="bi bi-eye-fill"></i>
+View
+
+</button>
+</td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="row mt-4">
+    <div class="col-lg-12">
+
+        <div class="card shadow">
+            <div class="card-body">
+
+                <h4>Attack Trend (Last 7 Days)</h4>
+
+                <div style="height:300px;">
+                    <canvas id="trendChart"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row mt-4">
+
+    <!-- Severity Chart -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h4>Severity Distribution</h4>
+
+                <div style="height:350px;">
+
+                    <canvas id="severityChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- System Information -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <h4>🖥 System Information</h4>
+
+                <table class="table">
+
+                    <tr>
+
+                        <td>Server Status</td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                {{ server_status }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Database</td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                {{ database_status }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td >CPU Usage</td>
+
+                        <td id="cpuUsage">
+
+                            {{ cpu_usage }}%
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Memory Usage</td>
+
+                        <td id="memoryUsage">
+
+                            {{ memory_usage }}%
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Last Scan</td>
+
+                        <td>
+
+                            {{ last_scan }}
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="card shadow mt-4">
+
+    <div class="card-body">
+
+        <h4>
+            🏆 Top Attacker IPs
+        </h4>
+
+        <table class="table table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>IP Address</th>
+
+                    <th>Total Attacks</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for ip in top_attackers %}
+
+                <tr>
+
+                    <td>
+
+                        {{ ip.ip_address }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-danger">
+
+                            {{ ip.total }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</div>            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    </div>
+</div>
+
+    </div>
+
+</div>
+
+
+<!-- ChartJS -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div
+id="liveToast"
+style="
+position:fixed;
+top:20px;
+right:20px;
+transition: all .4s ease;
+opacity:0;
+display:none;
+background:#dc3545;
+color:white;
+padding:15px;
+border-radius:10px;
+font-weight:bold;
+z-index:9999;
+box-shadow:0 0 10px rgba(0,0,0,.3);
+">
+</div>
+
+
+
+<div class="modal fade" id="attackModal" tabindex="-1">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg">
+
+            <!-- Modal Header -->
+
+            <div class="modal-header bg-dark text-white">
+
+                <h4 class="modal-title">
+
+                    🛡 SOC Incident Report
+
+                </h4>
+
+                <button class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <!-- Modal Body -->
+
+            <div class="modal-body">
+
+                <!-- Incident Status -->
+
+                <div class="alert alert-danger">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h5 class="mb-1">
+
+                                🚨 INCIDENT STATUS
+
+                            </h5>
+
+                            <h4 id="modalStatus">
+
+                                Blocked
+
+                            </h4>
+
+                        </div>
+
+                        <div class="text-end">
+
+                            <h6>Risk Score</h6>
+
+                            <h2>
+
+                                <span id="modalRisk">
+
+                                    95
+
+                                </span>/100
+
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Main Information -->
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="card border-primary mb-3">
+
+                            <div class="card-header bg-primary text-white">
+
+                                Attack Information
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <p>
+
+                                    <strong>Attack Type</strong><br>
+
+                                    <span id="modalType"></span>
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Severity</strong><br>
+
+                                    <span id="modalSeverity"></span>
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Detection Time</strong><br>
+
+                                    <span id="modalTime"></span>
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="card border-info mb-3">
+
+                            <div class="card-header bg-info text-dark">
+
+                                Source Information
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <p>
+
+                                    <strong>IP Address</strong><br>
+
+                                    <span id="modalIP"></span>
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Detection Source</strong><br>
+
+                                    Cyber Sentinel XDR
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Country</strong><br>
+
+                                    India
+
+                                </p>
+
+                                <p>
+
+                                    <strong>Hostname</strong><br>
+
+                                    localhost
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Description -->
+
+                <div class="card border-warning mb-3">
+
+                    <div class="card-header bg-warning fw-bold">
+
+                        📝 Attack Description
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <p id="modalDescription"
+                           class="mb-0">
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Recommendations -->
+
+                <div class="card border-success mb-3">
+
+                    <div class="card-header bg-success text-white fw-bold">
+
+                        ✅ Recommended Actions
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <ul id="recommendationList"
+                            class="mb-0">
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Timeline -->
+
+                <div class="card border-secondary">
+
+                    <div class="card-header bg-secondary text-white">
+
+                        📋 Incident Timeline
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <ul class="list-group">
+
+                            <li class="list-group-item">
+
+                                🔍 Threat detected by Cyber Sentinel XDR
+
+                            </li>
+
+                            <li class="list-group-item">
+
+                                ⚠ Severity classified automatically
+
+                            </li>
+
+                            <li class="list-group-item">
+
+                                🚫 Suspicious activity blocked
+
+                            </li>
+
+                            <li class="list-group-item">
+
+                                📊 Incident recorded in Attack Logs
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+                <button id="exportBtn"
+                        class="btn btn-danger">
+
+                    <i class="bi bi-printer"></i>
+
+                    Export Report
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+<script>
+    let lastAttackTime = "{{ latest_time }}";
+
+const labels = [
+{% if attack_types %}
+{% for key,value in attack_types.items() %}
+"{{ key }}",
+{% endfor %}
+{% else %}
+"No Attacks"
+{% endif %}
+];
+
+const values = [
+{% if attack_types %}
+{% for key,value in attack_types.items() %}
+{{ value }},
+{% endfor %}
+{% else %}
+0
+{% endif %}
+];
+
+const ctx = document.getElementById("attackChart");
+
+const attackChart = new Chart(ctx,{
+
+    type:"bar",
+
+    data:{
+
+        labels:labels,
+
+        datasets:[{
+
+    label:"Attack Count",
+
+    data:values,
+    
+
+    backgroundColor:[
+        "#dc3545",
+        "#fd7e14",
+        "#0d6efd",
+        "#198754",
+        "#6f42c1"
+    ],
+
+    borderRadius: 8,
+
+    barThickness: 90,
+    maxBarThickness: 90
+    ,
+
+    categoryPercentage: 0.5,
+    barPercentage: 0.7
+}]
+    },
+
+   options:{
+
+    animation:{
+    duration:1000
+},
+
+    responsive:true,
+    layout: {
+    padding: 20
+},
+
+    maintainAspectRatio:false,
+
+    plugins:{
+        legend:{
+            display:false
+        },
+        tooltip:{
+            enabled:true
+        }
+    },
+
+    scales:{
+    y:{
+        beginAtZero:true,
+        title:{
+            display:true,
+            text:"Number of Attacks"
+        }
+    },
+    x:{
+        title:{
+            display:true,
+            text:"Attack Types"
+        }
+    }
+}
+
+}
+
+});
+
+
+// Auto Refresh Every 5 Seconds
+
+// setInterval(function(){
+
+//     location.reload();
+
+// },5000);
+const trendLabels = [
+{% for label in trend_labels %}
+"{{ label }}",
+{% endfor %}
+];
+
+const trendValues = [
+{% for value in trend_values %}
+{{ value }},
+{% endfor %}
+];
+
+const trendChart = new Chart(
+    document.getElementById("trendChart"),
+{
+
+    type:"line",
+
+    data:{
+
+        labels:trendLabels,
+
+        datasets:[{
+
+            label:"Attacks",
+
+            data:trendValues,
+
+            borderColor:"#dc3545",
+
+            backgroundColor:"rgba(220,53,69,.2)",
+
+            fill:true,
+
+            tension:.3
+
+        }]
+
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        scales:{
+
+            y:{
+                beginAtZero:true,
+                ticks:{
+                    precision:0
+                }
+            }
+
+        }
+
+    }
+
+});
+
+const severityCtx = document.getElementById("severityChart");
+
+const severityChart = new Chart(severityCtx,{
+
+    type:"pie",
+
+    data:{
+
+        labels:[
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+        ],
+
+        datasets:[{
+
+            data:[
+                {{ critical_count }},
+                {{ high_count }},
+                {{ medium_count }},
+                {{ low_count }}
+            ],
+
+            backgroundColor:[
+                "#dc3545",
+                "#fd7e14",
+                "#0d6efd",
+                "#198754"
+            ]
+
+        }]
+
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false
+
+    }
+
+});
+
+setInterval(function () {
+
+    fetch("/dashboard-data")
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        document.getElementById("loginCount").innerHTML =
+            data.login_count;
+
+            document.getElementById("cpuUsage").innerHTML =
+data.cpu_usage + "%";
+
+document.getElementById("memoryUsage").innerHTML =
+data.memory_usage + "%";
+
+        document.getElementById("threatCount").innerHTML =
+            data.threat_count;
+
+        document.getElementById("totalAttacks").innerHTML =
+            data.total_attacks;
+
+        document.getElementById("systemStatus").innerHTML =
+            data.system_status == "Secure"
+            ? "🟢 System Secure"
+            : "🔴 System Under Attack";
+            // Security Score Update
+document.getElementById("securityScore").innerHTML =
+    data.security_score;
+
+// Progress Bar
+document.getElementById("securityBar").style.width =
+    data.security_score + "%";
+
+// Health Badge
+let badge = document.getElementById("healthBadge");
+
+if (data.security_score >= 90) {
+    badge.className = "badge bg-success";
+    badge.innerHTML = "Excellent";
+}
+else if (data.security_score >= 70) {
+    badge.className = "badge bg-info";
+    badge.innerHTML = "Good";
+}
+else if (data.security_score >= 50) {
+    badge.className = "badge bg-warning text-dark";
+    badge.innerHTML = "Warning";
+}
+else if (data.security_score >= 30) {
+    badge.className = "badge bg-warning";
+    badge.innerHTML = "High Risk";
+}
+else {
+    badge.className = "badge bg-danger";
+    badge.innerHTML = "Critical";
+}
+
+        attackChart.data.labels =
+            Object.keys(data.attack_types);
+
+        attackChart.data.datasets[0].data =
+            Object.values(data.attack_types);
+
+        attackChart.update();
+        trendChart.data.labels =
+    data.trend_labels;
+
+trendChart.data.datasets[0].data =
+    data.trend_values;
+
+trendChart.update();
+severityChart.data.datasets[0].data = [
+
+    data.critical_count,
+
+    data.high_count,
+
+    data.medium_count,
+
+    data.low_count
+
+];
+
+severityChart.update();
+let rows = "";
+
+data.recent_attacks.forEach(function(attack){
+
+    let badge = "";
+
+    if(attack.severity === "CRITICAL"){
+
+        badge =
+        '<span class="badge bg-danger">CRITICAL</span>';
+
+    }
+
+    else if(attack.severity === "HIGH"){
+
+        badge =
+        '<span class="badge bg-warning text-dark">HIGH</span>';
+
+    }
+
+    else if(attack.severity === "MEDIUM"){
+
+        badge =
+        '<span class="badge bg-primary">MEDIUM</span>';
+
+    }
+
+    else{
+
+        badge =
+        '<span class="badge bg-success">LOW</span>';
+
+    }
+
+   rows += `
+
+<tr>
+
+    <td>${attack.time}</td>
+
+    <td>${attack.attack_type}</td>
+
+    <td>${attack.ip_address}</td>
+
+    <td>${badge}</td>
+
+    <td>
+
+       <button
+    class="btn btn-primary btn-sm"
+
+    data-bs-toggle="modal"
+    data-bs-target="#attackModal"
+
+    data-type="${attack.attack_type}"
+    data-ip="${attack.ip_address}"
+    data-severity="${attack.severity}"
+    data-description="${attack.description}"
+    data-time="${attack.time}"
+
+    data-status="${attack.status}"
+    data-risk="${attack.risk_score}"
+    data-source="${attack.source}"
+    data-country="${attack.country}"
+    data-hostname="${attack.hostname}"
+    data-recommendation='${JSON.stringify(attack.recommendation)}'>
+    View
+
+</button>
+
+    </td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("recentAttackBody").innerHTML = rows;
+filterTable();
+
+        // Toast Notification
+        if (
+            lastAttackTime !== "" &&
+            data.latest_time !== lastAttackTime
+        ) {
+
+            showToast(
+                "🚨 New " +
+                data.latest_attack +
+                " Detected"
+            );
+
+        }
+
+        lastAttackTime = data.latest_time;
+
+    });
+
+},5000);
+
+function showToast(message){
+
+    const toast = document.getElementById("liveToast");
+
+    toast.innerHTML = message;
+
+    toast.style.display = "block";
+
+    toast.style.opacity = "1";
+
+    setTimeout(function(){
+
+        toast.style.opacity = "0";
+
+        setTimeout(function(){
+
+            toast.style.display = "none";
+
+        },400);
+
+    },4000);
+
+}
+function animateValue(id,start,end,duration){
+
+let range=end-start;
+
+let current=start;
+
+let increment=end>start?1:-1;
+
+let stepTime=Math.abs(Math.floor(duration/range));
+
+let obj=document.getElementById(id);
+
+let timer=setInterval(function(){
+
+current+=increment;
+
+obj.innerHTML=current;
+
+if(current==end){
+
+clearInterval(timer);
+
+}
+
+},stepTime);
+
+}
+
+document.getElementById("loginCount").innerHTML =
+    {{ login_count|default(0) }};
+
+document.getElementById("threatCount").innerHTML =
+    {{ threat_count|default(0) }};
+
+document.getElementById("totalAttacks").innerHTML =
+    {{ total_attacks|default(0) }};
+
+const ipSearch = document.getElementById("ipSearch");
+const attackSearch = document.getElementById("attackSearch");
+const severityFilter = document.getElementById("severityFilter");
+
+function filterTable(){
+
+    const ip = ipSearch.value.toLowerCase();
+
+    const attack = attackSearch.value.toLowerCase();
+
+    const severity = severityFilter.value.toUpperCase();
+
+    const rows = document.querySelectorAll("#recentAttackBody tr");
+
+    rows.forEach(function(row){
+
+        const ipText =
+            row.cells[2].textContent.toLowerCase();
+
+        const attackText =
+            row.cells[1].textContent.toLowerCase();
+
+        const severityText =
+            row.cells[3].textContent.trim().toUpperCase();
+
+        const show =
+
+            ipText.includes(ip) &&
+
+            attackText.includes(attack) &&
+
+            (
+                severity === "" ||
+
+                severityText.includes(severity)
+            );
+
+        row.style.display = show ? "" : "none";
+
+    });
+
+}
+
+ipSearch.addEventListener(
+    "keyup",
+    filterTable
+);
+
+attackSearch.addEventListener(
+    "keyup",
+    filterTable
+);
+
+severityFilter.addEventListener(
+    "change",
+    filterTable
+);
+
+const attackModal = document.getElementById("attackModal");
+
+attackModal.addEventListener("show.bs.modal", function(event){
+
+    const button = event.relatedTarget;
+
+    document.getElementById("modalType").textContent =
+        button.dataset.type;
+
+    document.getElementById("modalIP").textContent =
+        button.dataset.ip;
+
+    document.getElementById("modalSeverity").textContent =
+        button.dataset.severity;
+
+    document.getElementById("modalDescription").textContent =
+        button.dataset.description;
+
+    document.getElementById("modalTime").textContent =
+        button.dataset.time;
+
+    let risk = 20;
+
+    switch(button.dataset.severity){
+
+        case "CRITICAL":
+            risk = 95;
+            break;
+
+        case "HIGH":
+            risk = 75;
+            break;
+
+        case "MEDIUM":
+            risk = 50;
+            break;
+
+        default:
+            risk = 20;
+    }
+
+    document.getElementById("modalRisk").textContent = risk;
+
+    document.getElementById("modalStatus").innerHTML =
+        '<span class="badge bg-success fs-6">Blocked</span>';
+
+    let recommendations=[];
+
+    switch(button.dataset.type){
+
+        case "SQL Injection":
+            recommendations=[
+                "Block Source IP",
+                "Review Database Logs",
+                "Enable Prepared Statements",
+                "Audit SQL Queries"
+            ];
+            break;
+
+        case "XSS":
+            recommendations=[
+                "Sanitize User Input",
+                "Enable CSP",
+                "Escape HTML Output",
+                "Review Browser Logs"
+            ];
+            break;
+
+        case "Brute Force":
+            recommendations=[
+                "Block Attacker IP",
+                "Enable Account Lockout",
+                "Enable MFA",
+                "Reset User Password"
+            ];
+            break;
+
+        case "Credential Stuffing":
+            recommendations=[
+                "Force Password Reset",
+                "Enable MFA",
+                "Check Credential Leak",
+                "Review Login History"
+            ];
+            break;
+
+        case "Password Spraying":
+            recommendations=[
+                "Block IP",
+                "Monitor Failed Logins",
+                "Enable Smart Lockout",
+                "Notify Users"
+            ];
+            break;
+
+        default:
+            recommendations=[
+                "Investigate Incident",
+                "Review Security Logs",
+                "Block Suspicious Activity",
+                "Notify Security Team"
+            ];
+    }
+
+    let html="";
+
+    recommendations.forEach(function(item){
+        html += "<li class='mb-2'>" + item + "</li>";
+    });
+
+    document.getElementById("recommendationList").innerHTML = html;
+
+});
+
+// ===========================
+// LIVE CLOCK
+// ===========================
+
+function updateClock(){
+
+    const now = new Date();
+
+    const time =
+    now.toLocaleTimeString(
+        "en-IN",
+        {
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit"
+        }
+    );
+
+    const date =
+    now.toLocaleDateString(
+        "en-IN",
+        {
+            weekday:"long",
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
+        }
+    );
+
+    document.getElementById(
+        "liveClock"
+    ).innerHTML = "🕒 " + time;
+
+    document.getElementById(
+        "liveDate"
+    ).innerHTML = date;
+
+}
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container" style="max-width:1100px; margin-top:60px;">
+
+<div class="row align-items-center">
+
+    <!-- Left Side -->
+
+    <div class="col-lg-6 mb-5">
+
+        <h1 class="fw-bold display-5">
+            <i class="bi bi-shield-lock-fill text-info"></i>
+            Cyber Sentinel XDR
+        </h1>
+
+        <h3 class="mt-4">
+            Administrator Access
+        </h3>
+
+        <p class="text-light fs-5">
+            Access the administrative dashboard to monitor security events,
+            manage users, investigate incidents, and respond to cyber threats
+            in real time.
+        </p>
+
+        <div class="mt-4">
+
+            <div class="mb-3">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                User Management
+            </div>
+
+            <div class="mb-3">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                Live Attack Monitoring
+            </div>
+
+            <div class="mb-3">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                Incident Response
+            </div>
+
+            <div class="mb-3">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                Threat Analytics Dashboard
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Right Side -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-lg">
+
+            <div class="card-body p-5">
+
+                <h2 class="text-center mb-4">
+
+                    <i class="bi bi-person-lock text-info"></i>
+
+                    Admin Login
+
+                </h2>
+
+                <form method="POST">
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+
+                            Username
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+
+                                <i class="bi bi-person-fill"></i>
+
+                            </span>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="username"
+                                placeholder="Enter administrator username"
+                                required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+
+                            Password
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+
+                                <i class="bi bi-lock-fill"></i>
+
+                            </span>
+
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                name="password"
+                                placeholder="Enter administrator password"
+                                required>
+
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                onclick="togglePassword()">
+
+                                <i class="bi bi-eye-fill"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-4">
+
+                        <div class="form-check">
+
+                            
+
+                    </div>
+
+                    <div class="d-grid">
+
+                        <button
+                            type="submit"
+                            class="btn btn-info btn-lg">
+
+                            <i class="bi bi-shield-lock-fill"></i>
+
+                            Secure Admin Login
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <hr class="my-4">
+
+                <p class="text-center mb-0">
+
+                    Return to
+
+                    <a href="{{ url_for('auth.login') }}"
+                       class="text-info text-decoration-none fw-bold">
+
+                        User Login
+
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+function togglePassword(){
+
+    const password = document.getElementById("password");
+
+    if(password.type==="password"){
+
+        password.type="text";
+
+    }
+
+    else{
+
+        password.type="password";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

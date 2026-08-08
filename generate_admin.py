@@ -1,0 +1,7 @@
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
+
+password = "admin123"
+
+print(bcrypt.generate_password_hash(password).decode())

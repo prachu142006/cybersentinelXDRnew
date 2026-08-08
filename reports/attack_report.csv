@@ -1,0 +1,12 @@
+ID,IP Address,Attack Type,Severity,Description,Date
+14,127.0.0.1,Credential Stuffing,HIGH,Multiple usernames attempted from the same IP.,2026-06-30 19:07:52
+15,127.0.0.1,Password Spraying,HIGH,Same password attempted on multiple accounts.,2026-06-30 19:07:52
+16,127.0.0.1,Account Enumeration,MEDIUM,Multiple invalid usernames detected from same IP.,2026-06-30 19:07:52
+17,127.0.0.1,SQL Injection,CRITICAL,SQL Injection payload detected.,2026-06-30 19:08:09
+18,127.0.0.1,XSS Attack,CRITICAL,Cross Site Scripting payload detected.,2026-06-30 19:08:20
+19,127.0.0.1,Honeypot Access,CRITICAL,Unauthorized access to hidden admin page.,2026-06-30 19:20:09
+20,127.0.0.1,Brute Force,HIGH,Multiple failed login attempts detected.,2026-06-30 19:35:41
+21,127.0.0.1,Brute Force,HIGH,Multiple failed login attempts detected.,2026-06-30 19:35:50
+22,127.0.0.1,Brute Force,HIGH,Multiple failed login attempts detected.,2026-06-30 19:35:57
+23,127.0.0.1,Brute Force,HIGH,Multiple failed login attempts detected.,2026-06-30 19:36:05
+24,127.0.0.1,Brute Force,HIGH,Multiple failed login attempts detected.,2026-06-30 19:36:13
