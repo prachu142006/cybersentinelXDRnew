@@ -1,4 +1,3 @@
-
 import os
 
 
@@ -10,6 +9,12 @@ class Config:
     )
 
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "connect_args": {
+            "ssl": {}
+        }
+    }
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
