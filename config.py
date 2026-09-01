@@ -1,20 +1,39 @@
+
 import os
+
 
 class Config:
 
-    SECRET_KEY = "your-secret-key"
+    SECRET_KEY = os.getenv(
+        "SECRET_KEY",
+        "dev-secret-key"
+    )
 
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:14%40prachu%232006@localhost/cybersentinel"
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    MAIL_SERVER = os.getenv(
+        "MAIL_SERVER",
+        "smtp.gmail.com"
+    )
 
-    MAIL_SERVER = "smtp.gmail.com"
-    MAIL_PORT = 587
+    MAIL_PORT = int(
+        os.getenv("MAIL_PORT", "587")
+    )
+
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
 
-    MAIL_USERNAME = "prachitivartak123@gmail.com"
-    MAIL_PASSWORD = "wzpb yxaa bbeh biuy"
+    MAIL_USERNAME = os.getenv(
+        "MAIL_USERNAME"
+    )
 
-    MAIL_DEFAULT_SENDER = "Cyber Sentinel XDR <prachitivartak123@gmail.com>"
+    MAIL_PASSWORD = os.getenv(
+        "MAIL_PASSWORD"
+    )
+
+    MAIL_DEFAULT_SENDER = os.getenv(
+        "MAIL_DEFAULT_SENDER",
+        "Cyber Sentinel XDR"
+    )
