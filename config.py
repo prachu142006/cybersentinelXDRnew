@@ -10,11 +10,18 @@ class Config:
 
     DATABASE_URL = os.getenv("DATABASE_URL")
 
-    if DATABASE_URL and DATABASE_URL.startswith("mysql://"):
+    if DATABASE_URL:
+        # SQLAlchemy ko PyMySQL driver use karwana hai
         DATABASE_URL = DATABASE_URL.replace(
             "mysql://",
             "mysql+pymysql://",
             1
+        )
+
+        # Aiven ka ssl-mode parameter PyMySQL accept nahi karta
+        DATABASE_URL = DATABASE_URL.replace(
+            "?ssl-mode=REQUIRED",
+            ""
         )
 
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
@@ -26,6 +33,9 @@ class Config:
     }
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+    # ---------------- MAIL SETTINGS ----------------
 
     MAIL_SERVER = os.getenv(
         "MAIL_SERVER",
