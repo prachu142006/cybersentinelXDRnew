@@ -8,7 +8,16 @@ class Config:
         "dev-secret-key"
     )
 
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    DATABASE_URL = os.getenv("DATABASE_URL")
+
+    if DATABASE_URL and DATABASE_URL.startswith("mysql://"):
+        DATABASE_URL = DATABASE_URL.replace(
+            "mysql://",
+            "mysql+pymysql://",
+            1
+        )
+
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL
 
     SQLALCHEMY_ENGINE_OPTIONS = {
         "connect_args": {
